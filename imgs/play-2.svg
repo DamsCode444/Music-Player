@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="800px" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+  <!-- Light green circular background -->
+  <circle cx="14" cy="14" r="14" fill="#90ee90" />
+
+  <!-- Centered play icon -->
+  <polygon points="11,8 20,14 11,20" fill="black"/>
+</svg>

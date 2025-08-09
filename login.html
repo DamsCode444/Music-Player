@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmony | Premium Music Streaming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c0c0c, #1a1a2e);
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Background elements */
+        .bg-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(92, 131, 116, 0.15) 0%, rgba(44, 83, 100, 0) 70%);
+        }
+
+        .circle-1 {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+        }
+
+        .circle-2 {
+            width: 600px;
+            height: 600px;
+            bottom: -200px;
+            right: -200px;
+        }
+
+        .circle-3 {
+            width: 300px;
+            height: 300px;
+            top: 40%;
+            right: 10%;
+        }
+
+        /* Floating notes */
+        .note {
+            position: absolute;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.1);
+            animation: float 15s infinite linear;
+        }
+
+        .note:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .note:nth-child(2) { top: 30%; left: 15%; animation-delay: -3s; }
+        .note:nth-child(3) { top: 70%; left: 20%; animation-delay: -5s; }
+        .note:nth-child(4) { top: 20%; left: 80%; animation-delay: -7s; }
+        .note:nth-child(5) { top: 50%; left: 90%; animation-delay: -9s; }
+        .note:nth-child(6) { top: 85%; left: 75%; animation-delay: -11s; }
+
+        /* Main container */
+        .container {
+            display: flex;
+            width: 900px;
+            height: 550px;
+            background: rgba(15, 15, 25, 0.7);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Left side - Branding */
+        .branding {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(30, 215, 96, 0.2), rgba(20, 30, 48, 0.8));
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #1ed760, #2ebf75);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .slogan {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .features {
+            list-style: none;
+            margin-top: 30px;
+        }
+
+        .features li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .features li i {
+            color: #1ed760;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* Music visualization */
+        .visualizer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 0 20px;
+            gap: 8px;
+        }
+
+        .bar {
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(to top, #1ed760, #2ebf75);
+            border-radius: 5px 5px 0 0;
+            animation: bar-animation 1.5s infinite ease-in-out;
+        }
+
+        .bar:nth-child(1) { animation-delay: 0s; height: 30px; }
+        .bar:nth-child(2) { animation-delay: 0.2s; height: 50px; }
+        .bar:nth-child(3) { animation-delay: 0.4s; height: 70px; }
+        .bar:nth-child(4) { animation-delay: 0.6s; height: 90px; }
+        .bar:nth-child(5) { animation-delay: 0.8s; height: 70px; }
+        .bar:nth-child(6) { animation-delay: 1.0s; height: 50px; }
+        .bar:nth-child(7) { animation-delay: 1.2s; height: 30px; }
+
+        /* Right side - Forms */
+        .auth-forms {
+            flex: 1;
+            padding: 15px 40px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .form-container {
+            width: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .form-header {
+            margin-bottom: 5px;
+        }
+
+        .form-header h2 {
+            font-size: 25px;
+            margin-bottom: 5px;
+            background: linear-gradient(45deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .form-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        /* Form styles */
+        .form-group {
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(20, 20, 30, 0.7);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1ed760;
+            box-shadow: 0 0 0 2px rgba(30, 215, 96, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #1ed760, #2ebf75);
+            color: #0c0c0c;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 215, 96, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #1ed760;
+            color: #1ed760;
+            margin-top: 15px;
+        }
+
+        .btn-outline:hover {
+            background: rgba(30, 215, 96, 0.1);
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .switch-form a {
+            color: #1ed760;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .switch-form a:hover {
+            text-decoration: underline;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-1000px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes bar-animation {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1.8); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 950px) {
+            .container {
+                width: 95%;
+                height: auto;
+                flex-direction: column;
+            }
+            
+            .branding {
+                padding: 30px;
+            }
+            
+            .auth-forms {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background elements -->
+    <div class="bg-elements">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+        <div class="note"><i class="fas fa-music"></i></div>
+        <div class="note"><i class="fas fa-music"></i></div>
+        <div class="note"><i class="fas fa-music"></i></div>
+        <div class="note"><i class="fas fa-music"></i></div>
+        <div class="note"><i class="fas fa-music"></i></div>
+        <div class="note"><i class="fas fa-music"></i></div>
+    </div>
+
+    <!-- Main container -->
+    <div class="container">
+        <!-- Branding section -->
+        <div class="branding">
+            <div>
+                <div class="logo">HARMONY</div>
+                <div class="slogan">Elevate your music experience with premium quality and personalized playlists</div>
+                
+                <ul class="features">
+                    <li><i class="fas fa-check-circle"></i> 80+ million songs and podcasts</li>
+                    <li><i class="fas fa-check-circle"></i> Ad-free listening experience</li>
+                    <li><i class="fas fa-check-circle"></i> Highest quality audio streaming</li>
+                    <li><i class="fas fa-check-circle"></i> Personalized recommendations</li>
+                    <li><i class="fas fa-check-circle"></i> Download music for offline listening</li>
+                </ul>
+            </div>
+            
+            <!-- Music visualizer -->
+            <div class="visualizer">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+        
+        <!-- Authentication forms -->
+        <div class="auth-forms">
+            <!-- Login Form -->
+            <div class="form-container" id="login-form">
+                <div class="form-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to continue your musical journey</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password">
+                </div>
+                
+                <button class="btn" id="login-btn">Sign In</button>
+                
+                <div class="social-login">
+                    <button class="social-btn">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button class="social-btn">
+                        <i class="fab fa-apple"></i> Apple
+                    </button>
+                </div>
+                
+                <div class="switch-form">
+                    Don't have an account? <a id="show-signup">Sign Up</a>
+                </div>
+            </div>
+            
+            <!-- Signup Form (hidden by default) -->
+            <div class="form-container" id="signup-form" style="display: none;">
+                <div class="form-header">
+                    <h2>Create Account</h2>
+                    <p>Join our community of music lovers</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" placeholder="Create a password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="signup-confirm">Confirm Password</label>
+                    <input type="password" id="signup-confirm" placeholder="Confirm your password">
+                </div>
+                
+                <button class="btn" id="signup-btn">Create Account</button>
+                
+                <div class="switch-form">
+                    Already have an account? <a id="show-login">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle between login and signup forms
+        document.getElementById('show-signup').addEventListener('click', function() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'block';
+        });
+        
+        document.getElementById('show-login').addEventListener('click', function() {
+            document.getElementById('signup-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+        });
+        
+        // Function to redirect to the main page
+        function redirectToMainPage() {
+            // Create a success effect
+            const successMsg = document.createElement('div');
+            successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Success! Redirecting...';
+            successMsg.style.position = 'fixed';
+            successMsg.style.top = '20px';
+            successMsg.style.right = '20px';
+            successMsg.style.padding = '15px 25px';
+            successMsg.style.background = '#1ed760';
+            successMsg.style.color = '#0c0c0c';
+            successMsg.style.borderRadius = '8px';
+            successMsg.style.zIndex = '1000';
+            successMsg.style.fontWeight = '600';
+            successMsg.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+            successMsg.style.animation = 'fadeIn 0.5s';
+            
+            document.body.appendChild(successMsg);
+            
+            // Remove after animation
+            setTimeout(() => {
+                successMsg.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(successMsg);
+                }, 500);
+            }, 2000);
+            
+            // Redirect to the main page after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'http://127.0.0.1:5500/index_1.html';
+            }, 2500);
+        }
+        
+        // Login button functionality
+        document.getElementById('login-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            // Simple validation
+            if (!email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Create loading effect
+            const originalText = this.innerText;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            this.disabled = true;
+            
+            // Simulate authentication process
+            setTimeout(() => {
+                this.innerHTML = originalText;
+                this.disabled = false;
+                
+                // Redirect to main page
+                redirectToMainPage();
+            }, 1500);
+        });
+        
+        // Signup button functionality
+        document.getElementById('signup-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm').value;
+            
+            // Simple validation
+            if (!name || !email || !password || !confirmPassword) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+            
+            // Create loading effect
+            const originalText = this.innerText;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            this.disabled = true;
+            
+            // Simulate account creation process
+            setTimeout(() => {
+                this.innerHTML = originalText;
+                this.disabled = false;
+                
+                // Redirect to main page
+                redirectToMainPage();
+            }, 1500);
+        });
+        
+        // Background animation - create floating circles
+        function createFloatingCircles() {
+            const bgElements = document.querySelector('.bg-elements');
+            for (let i = 0; i < 10; i++) {
+                const circle = document.createElement('div');
+                circle.classList.add('circle');
+                
+                // Random size and position
+                const size = Math.random() * 100 + 50;
+                circle.style.width = `${size}px`;
+                circle.style.height = `${size}px`;
+                circle.style.top = `${Math.random() * 100}%`;
+                circle.style.left = `${Math.random() * 100}%`;
+                
+                // Animation
+                circle.style.animation = `float ${Math.random() * 20 + 10}s infinite linear`;
+                circle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                bgElements.appendChild(circle);
+            }
+        }
+        
+        // Initialize
+        createFloatingCircles();
+    </script>
+</body>
+</html>
